@@ -1,9 +1,43 @@
-
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { BsFillChatRightTextFill } from "react-icons/bs";
 import { IoNotifications } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
+
+  const CustomLink = ({ to, title, className = "" }) => {
+    const location = useLocation();
+    // console.log(location.pathname);
+    // console.log(to);
+    return (
+      <NavLink
+        to={to}
+        className={`${className} relative group font-medium text-base text-gray-50 uppercase`}
+      >
+        {title}
+        <span
+          className={`h-[2px] inline-block bg-gray-100 absolute left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300
+        ${location.pathname === to ? "w-full" : "w-0"}
+        `}
+        >
+          &nbsp;
+        </span>
+      </NavLink>
+    );
+  };
+
   return (
     <section className="py-4 px-4 bg-white/80 shadow-lg mb-10 flex items-center justify-between border border-b-gray-100">
       {/* left side */}
@@ -23,7 +57,34 @@ const Header = () => {
       <div className="flex items-center gap-5">
         <BsFillChatRightTextFill className="text-xl hidden lg:block" />
         <IoNotifications className="text-xl hidden lg:block" />
-        <RxDashboard className="text-xl" />
+        <div className="dropdown dropdown-end">
+          <label tabIndex={0} onClick={toggleDropdown}>
+            <RxDashboard className="text-xl  hover:animate-spin " />
+          </label>
+          {isOpen && (
+            <ul
+              tabIndex={0}
+              className="dropdown-content px-4 py-3 shadow bg-accent rounded-md w-48 mt-6 font-medium"
+              onClick={closeDropdown}
+            >
+              <li className="mb-2">
+                <CustomLink to="/home" title="Home" className="" />
+              </li>
+              <li className="my-2">
+                <CustomLink to="/profile" title="Profile" className="" />
+              </li>
+              <li className="my-2">
+                <CustomLink to="/signup" title="Sign-UP" className="" />
+              </li>
+              <li className="my-2">
+                <CustomLink to="/signin" title="Sign-IN" className="" />
+              </li>
+              <li className="mt-2">
+                <CustomLink to="/signout" title="Sign-Out" className="" />
+              </li>
+            </ul>
+          )}
+        </div>
       </div>
     </section>
   );

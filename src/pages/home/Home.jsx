@@ -6,9 +6,15 @@ import RightSide from "../../components/RightSide";
 const Home = () => {
   return (
     <section className="grid lg:grid-cols-7 grid-cols-1 gap-5 px-2">
-      <LeftSide />
-      <MiddleContent />
-      <RightSide />
+      <div className="lg:col-span-2">
+        <LeftSide />
+      </div >
+      <div className="lg:col-span-4">
+        <MiddleContent />
+      </div>
+      <div className="lg:col-span-1">
+        <RightSide />
+      </div>
     </section>
   );
 };
