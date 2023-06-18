@@ -3,8 +3,8 @@ import laptop from "../assets/images/laptop.jpg";
 
 const RightSide = () => {
   return (
-    <section className="col-span-1">
-      <div className="bg-white/80 border border-gray-200  shadow-lg rounded-lg px-2 h-[325px] flex flex-col justify-center">
+    <section className="lg:col-span-1 lg:flex md:hidden">
+      <div className="bg-white/80 border border-gray-200  shadow-lg rounded-lg px-2 py-3">
         <div>
           <img src={laptop} alt="" className="rounded-lg" />
           <p className=" text-gray-600 mt-3 text-sm">

@@ -2,7 +2,7 @@ import userImg from "../assets/images/userImg.png";
 
 const MiddleContent = () => {
   return (
-    <div className="col-span-4">
+    <div className="lg:col-span-4">
       <div className="bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
         <div className="flex items-center gap-5">
           <img src={userImg} alt="" className="w-16 rounded-full" />

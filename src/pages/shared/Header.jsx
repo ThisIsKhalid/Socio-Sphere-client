@@ -11,7 +11,7 @@ const Header = () => {
         <h1 className="text-3xl uppercase text-primary font-bold">
           Socio Sphere
         </h1>
-        <div className="form-control">
+        <div className="form-control hidden lg:block">
           <input
             type="text"
             placeholder="Search…"
@@ -21,8 +21,8 @@ const Header = () => {
       </div>
       {/* right side */}
       <div className="flex items-center gap-5">
-        <BsFillChatRightTextFill className="text-xl" />
-        <IoNotifications className="text-xl" />
+        <BsFillChatRightTextFill className="text-xl hidden lg:block" />
+        <IoNotifications className="text-xl hidden lg:block" />
         <RxDashboard className="text-xl" />
       </div>
     </section>

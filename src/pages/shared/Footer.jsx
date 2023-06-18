@@ -1,9 +1,10 @@
-import React from 'react';
+
+import ColorCheck from '../../components/ColorCheck';
 
 const Footer = () => {
     return (
         <div>
-            footer
+            <ColorCheck/>
         </div>
     );
 };

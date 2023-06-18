@@ -5,8 +5,7 @@ import RightSide from "../../components/RightSide";
 
 const Home = () => {
   return (
-    <section className="grid grid-cols-7 gap-5 px-2">
-      {/* <ColorCheck /> */}
+    <section className="grid lg:grid-cols-7 grid-cols-1 gap-5 px-2">
       <LeftSide />
       <MiddleContent />
       <RightSide />

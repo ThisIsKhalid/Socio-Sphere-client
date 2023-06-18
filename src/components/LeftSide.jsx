@@ -6,7 +6,7 @@ import userImg from "../assets/images/userImg.png";
 const LeftSide = () => {
   return (
     <>
-      <div className="bg-white/80 border border-gray-200 col-span-2 shadow-lg rounded-lg px-5 h-[300px] flex flex-col justify-center">
+      <div className="bg-white/80 border border-gray-200 lg:col-span-2 shadow-lg rounded-lg px-5 h-[300px] flex flex-col justify-center">
         {/* ------------------- */}
         <div className="flex items-center justify-between border-b pb-3 mb-3">
           <div className="flex items-center gap-2">
