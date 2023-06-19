@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import laptop from "../assets/images/laptop.jpg";
 
-const RightSide = () => {
+const Advertise = () => {
   return (
     <section className="lg:flex md:hidden">
       <div className="bg-white/80 border border-gray-200  shadow-lg rounded-lg px-2 py-3">
@@ -19,4 +19,4 @@ const RightSide = () => {
   );
 };
 
-export default RightSide;
+export default Advertise;

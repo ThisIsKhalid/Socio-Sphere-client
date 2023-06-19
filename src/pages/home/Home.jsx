@@ -2,9 +2,9 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import userImg from "../../assets/images/userImg.png";
-import LeftSide from "../../components/LeftSide";
 import PostContent from "../../components/PostContent";
-import RightSide from "../../components/RightSide";
+import Advertise from "../../components/Advertise";
+import UserDetails from "../../components/UserDetails";
 // import ColorCheck from "../../components/colorCheck";
 
 const Home = () => {
@@ -30,12 +30,12 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(text, file);
+    console.log(text, file);
     try {
       const formData = new FormData();
       formData.append("text", text);
       formData.append("file", file);
-      // console.log(formData);
+      console.log(formData);
       // const response = await axios.post("/api/your-endpoint", formData);
 
       // console.log(response.data);
@@ -47,7 +47,7 @@ const Home = () => {
   return (
     <section className="grid lg:grid-cols-7 grid-cols-1 gap-5 px-2">
       <div className="lg:col-span-2">
-        <LeftSide />
+        <UserDetails />
       </div>
       {/* --------middle--------- */}
       <div className="lg:col-span-4">
@@ -92,7 +92,7 @@ const Home = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="bg-primary px-3 py-1 rounded-md text-base font-semibold text-slate-900 mt-2 hover:bg-warning hover:text-gray-100 uppercase"
+                className="btn btn-sm btn-primary mt-2 hover:btn-warning"
               >
                 Submit
               </button>
@@ -100,14 +100,14 @@ const Home = () => {
           </form>
         </div>
         <h1 className="text-2xl font-bold text-secondary underline underline-offset-8 bg-white/80 border border-gray-200 shadow-lg rounded-lg px-5 py-5">
-          Trending Topic :
+          Trending Topics :
         </h1>
         <PostContent />
         <PostContent />
       </div>
       {/* ---------------- */}
       <div className="lg:col-span-1">
-        <RightSide />
+        <Advertise />
       </div>
     </section>
   );

@@ -1,12 +1,22 @@
 import { BiCommentDetail } from "react-icons/bi";
-import { BsPersonAdd } from "react-icons/bs";
+import { BsHeart, BsPersonAdd } from "react-icons/bs";
 import { SlLike } from "react-icons/sl";
 import { TbShare3 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
 import your_name from "../assets/images/your_name.jpg";
+import { useState } from "react";
 
 const PostContentDetails = () => {
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const handleDropdownToggle = () => {
+      setDropdownOpen(!dropdownOpen);
+    };
+
+    const handleItemClick = (item) => {
+      console.log(`Clicked ${item}`);
+    };
   return (
     <div className="lg:w-3/4 w-full mx-auto px-5">
       <div className="mb-5 bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
@@ -39,12 +49,35 @@ const PostContentDetails = () => {
 
           <img src={your_name} alt="" className="mt-3 rounded" />
 
-          <div className="mt-3 flex items-center gap-5">
+          <div className="mt-3 flex items-end gap-5">
+            <div className="dropdown dropdown-top">
+              <label tabIndex={0} className="" onClick={handleDropdownToggle}>
+                <SlLike className="text-2xl" />
+              </label>
+              {dropdownOpen && (
+                <>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content px-5 py-2 shadow bg-gray-100 rounded flex items-center gap-5 mb-4 ml-1"
+                  >
+                    <li>
+                      <button onClick={() => handleItemClick("Like")}>
+                        <SlLike className="text-2xl text-info font-bold" />
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => handleItemClick("Love")}>
+                        <BsHeart className="text-2xl text-error font-bold" />
+                      </button>
+                    </li>
+                  </ul>
+                </>
+              )}
+            </div>
             <button className="text-2xl">
-              <SlLike />
-            </button>
-            <button className="text-2xl">
-              <BiCommentDetail />
+              <Link to="/post-details">
+                <BiCommentDetail />
+              </Link>
             </button>
             <button className="text-2xl">
               <TbShare3 />
@@ -62,7 +95,7 @@ const PostContentDetails = () => {
               <input
                 type="submit"
                 value="Submit"
-                className="bg-accent py-2 px-5 rounded-md text-white font-semibold mt-1"
+                className="btn btn-sm btn-primary hover:btn-error mt-1"
               />
             </form>
 
