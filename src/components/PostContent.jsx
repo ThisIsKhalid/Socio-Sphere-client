@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsHeart, BsPersonAdd } from "react-icons/bs";
@@ -7,8 +8,10 @@ import { Link } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
 import your_name from "../assets/images/your_name.jpg";
 
-const PostContent = () => {
+const PostContent = ({ content }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  // console.log(content);
+  const { text, file } = content;
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -17,6 +20,8 @@ const PostContent = () => {
   const handleItemClick = (item) => {
     console.log(`Clicked ${item}`);
   };
+
+const mainFileUrl = file.replace(/\\/g, "/");
 
   return (
     <div className="mb-5 bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
@@ -38,9 +43,7 @@ const PostContent = () => {
       </div>
       <div className="mt-5">
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga possimus
-          suscipit non. Expedita nemo velit blanditiis in impedit nulla nobis
-          vel commodi nisi minus! Voluptatum....{" "}
+          {text}
           <Link to="/post-details">
             <span className="text-info font-semibold underline underline-offset-4">
               read more
@@ -48,7 +51,11 @@ const PostContent = () => {
           </Link>
         </p>
 
-        <img src={your_name} alt="" className="mt-3 rounded" />
+        <img
+          src={`http://localhost:5000/${mainFileUrl}`}
+          alt=""
+          className="mt-3 rounded"
+        />
 
         <div className="mt-3 flex items-end gap-5">
           <div className="dropdown dropdown-top">
@@ -63,12 +70,12 @@ const PostContent = () => {
                 >
                   <li>
                     <button onClick={() => handleItemClick("Like")}>
-                      <SlLike className="text-2xl text-info font-bold"/>
+                      <SlLike className="text-2xl text-info font-bold" />
                     </button>
                   </li>
                   <li>
                     <button onClick={() => handleItemClick("Love")}>
-                      <BsHeart className="text-2xl text-error font-bold"/>
+                      <BsHeart className="text-2xl text-error font-bold" />
                     </button>
                   </li>
                 </ul>

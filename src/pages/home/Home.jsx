@@ -1,13 +1,14 @@
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import userImg from "../../assets/images/userImg.png";
-import PostContent from "../../components/PostContent";
 import Advertise from "../../components/Advertise";
+import PostContent from "../../components/PostContent";
 import UserDetails from "../../components/UserDetails";
 // import ColorCheck from "../../components/colorCheck";
 
 const Home = () => {
+  const [contents, setContents] = useState([]);
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -30,7 +31,6 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(text, file);
 
     try {
       const formData = new FormData();
@@ -50,10 +50,27 @@ const Home = () => {
       console.log(response.data);
       setText("");
       setFile(null);
+      setImageUrl(null);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    // Fetch contents from the server
+    const fetchContents = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/v1/content"
+        );
+        setContents(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchContents();
+  }, []);
 
   return (
     <section className="grid lg:grid-cols-7 grid-cols-1 gap-5 px-2">
@@ -113,8 +130,9 @@ const Home = () => {
         <h1 className="text-2xl font-bold text-secondary underline underline-offset-8 bg-white/80 border border-gray-200 shadow-lg rounded-lg px-5 py-5">
           Trending Topics :
         </h1>
-        <PostContent />
-        <PostContent />
+        {contents?.map((content) => (
+          <PostContent key={content._id} content={content} />
+        ))}
       </div>
       {/* ---------------- */}
       <div className="lg:col-span-1">
