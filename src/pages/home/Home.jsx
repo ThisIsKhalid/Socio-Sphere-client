@@ -31,14 +31,25 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(text, file);
+
     try {
       const formData = new FormData();
       formData.append("text", text);
       formData.append("file", file);
-      console.log(formData);
-      // const response = await axios.post("/api/your-endpoint", formData);
+      // console.log(formData);
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/content/create-content",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      // console.log(response.data);
+      console.log(response.data);
+      setText("");
+      setFile(null);
     } catch (error) {
       console.error(error);
     }
