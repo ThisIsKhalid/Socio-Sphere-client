@@ -1,9 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../layout/layout";
+import AboutMe from "../pages/aboutme/AboutMe";
 import Home from "../pages/home/Home";
 import SignIn from "../pages/login/SignIn";
 import SignUp from "../pages/login/SignUp";
+import Medias from "../pages/medias/Medias";
 import Profile from "../pages/profile/Profile";
+import PostContentDetails from "../components/PostContentDetails";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +22,16 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/media",
+        element: <Medias />,
+      },
+      {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/aboutme",
+        element: <AboutMe />,
       },
       {
         path: "/signup",
@@ -29,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/signin",
         element: <SignIn />,
+      },
+      {
+        path: "/post-details",
+        element: <PostContentDetails />,
       },
     ],
   },

@@ -16,7 +16,6 @@ const Header = () => {
     setIsOpen(false);
   };
 
-
   const CustomLink = ({ to, title, className = "" }) => {
     const location = useLocation();
     // console.log(location.pathname);
@@ -28,7 +27,7 @@ const Header = () => {
       >
         {title}
         <span
-          className={`h-[2px] inline-block bg-gray-100 absolute left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300
+          className={`h-[2px] inline-block bg-error absolute left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300
         ${location.pathname === to ? "w-full" : "w-0"}
         `}
         >
@@ -55,9 +54,37 @@ const Header = () => {
       </div>
       {/* right side */}
       <div className="flex items-center gap-5">
+        <ul className="lg:flex items-center gap-5 hidden">
+          <li className="">
+            <CustomLink to="/home" title="Home" className="text-neutral" />
+          </li>
+          <li className="">
+            <CustomLink to="/media" title="Media" className="text-neutral" />
+          </li>
+          <li className="">
+            <CustomLink
+              to="/aboutme"
+              title="About"
+              className="text-neutral"
+            />
+          </li>
+          <li className="">
+            <CustomLink to="/signup" title="Sign-UP" className="text-neutral" />
+          </li>
+          <li className="">
+            <CustomLink to="/signin" title="Sign-IN" className="text-neutral" />
+          </li>
+          <li className="">
+            <CustomLink
+              to="/signout"
+              title="Sign-Out"
+              className="text-neutral"
+            />
+          </li>
+        </ul>
         <BsFillChatRightTextFill className="text-xl hidden lg:block" />
         <IoNotifications className="text-xl hidden lg:block" />
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end lg:hidden block">
           <label tabIndex={0} onClick={toggleDropdown}>
             <RxDashboard className="text-xl  hover:animate-spin " />
           </label>
@@ -68,19 +95,30 @@ const Header = () => {
               onClick={closeDropdown}
             >
               <li className="mb-2">
-                <CustomLink to="/home" title="Home" className="" />
+                <CustomLink to="/home" title="Home" className="text-sm" />
               </li>
               <li className="my-2">
-                <CustomLink to="/profile" title="Profile" className="" />
+                <CustomLink to="/media" title="Media" className="text-sm" />
               </li>
               <li className="my-2">
-                <CustomLink to="/signup" title="Sign-UP" className="" />
+                <CustomLink
+                  to="/aboutme"
+                  title="About"
+                  className="text-sm"
+                />
               </li>
               <li className="my-2">
-                <CustomLink to="/signin" title="Sign-IN" className="" />
+                <CustomLink to="/signup" title="Sign-UP" className="text-sm" />
+              </li>
+              <li className="my-2">
+                <CustomLink to="/signin" title="Sign-IN" className="text-sm" />
               </li>
               <li className="mt-2">
-                <CustomLink to="/signout" title="Sign-Out" className="" />
+                <CustomLink
+                  to="/signout"
+                  title="Sign-Out"
+                  className="text-sm"
+                />
               </li>
             </ul>
           )}
