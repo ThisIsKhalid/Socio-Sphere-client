@@ -2,12 +2,31 @@ import { BiCommentDetail } from "react-icons/bi";
 import { BsHeart, BsPersonAdd } from "react-icons/bs";
 import { SlLike } from "react-icons/sl";
 import { TbShare3 } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
-import your_name from "../assets/images/your_name.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const PostContentDetails = () => {
+  let  {id} = useParams();
+  const [content,setContent] = useState({})
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/contents/${id}`
+        );
+
+        setContent(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchContent();
+  }, [id]);
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleDropdownToggle = () => {
@@ -38,16 +57,10 @@ const PostContentDetails = () => {
         </div>
         <div className="mt-5">
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-            possimus suscipit non. Expedita nemo velit blanditiis in impedit
-            nulla nobis vel commodi nisi minus! Voluptatum Lorem ipsum dolor,
-            sit amet consectetur adipisicing elit. Quaerat consequuntur,
-            veritatis inventore voluptatibus atque ratione repudiandae
-            repellendus, quae quam quo eius! Fugiat quisquam ea ut sunt
-            perferendis fuga accusantium eius?
+            {content.text}
           </p>
 
-          <img src={your_name} alt="" className="mt-3 rounded" />
+          <img src={content.img} alt="" className="mt-3 rounded" />
 
           <div className="mt-3 flex items-end gap-5">
             <div className="dropdown dropdown-top">

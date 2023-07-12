@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { toast } from "react-hot-toast";
 import userImg from "../../assets/images/userImg.png";
 import Advertise from "../../components/Advertise";
 import PostContent from "../../components/PostContent";
@@ -9,7 +10,6 @@ import UserDetails from "../../components/UserDetails";
 
 const Home = () => {
   const [contents, setContents] = useState([]);
-  const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -31,28 +31,46 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const form = e.target;
+    const text = form.text.value;
 
-    try {
-      const formData = new FormData();
-      formData.append("text", text);
-      formData.append("file", file);
-      // console.log(formData);
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/content/create-content",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+
+    if (text || file) {
+      try {
+        let imageUrl = null;
+        if(file) {
+          const formData = new FormData();
+          formData.append("image", file);
+
+          const imageUploadResponse = await axios.post(
+            "https://api.imgbb.com/1/upload?key=4e6182c8cb621e9c45518eeee1921456",
+            formData
+          );
+          imageUrl = imageUploadResponse.data.data.url;
         }
-      );
 
-      console.log(response.data);
-      setText("");
-      setFile(null);
-      setImageUrl(null);
-    } catch (error) {
-      console.error(error);
+        const content = {
+          text,
+          img: imageUrl,
+        };
+        // console.log(content);
+
+        // eslint-disable-next-line no-unused-vars
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/contents/create-content",
+          content
+        );
+
+        // console.log(response.data);
+        toast.success('Post Uploaded !')
+        form.reset();
+        setFile(null);
+        setImageUrl(null);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      toast.error("Please write text or image !");
     }
   };
 
@@ -61,7 +79,7 @@ const Home = () => {
     const fetchContents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/v1/content"
+          "http://localhost:5000/api/v1/contents"
         );
         setContents(response.data);
       } catch (error) {
@@ -70,7 +88,7 @@ const Home = () => {
     };
 
     fetchContents();
-  }, []);
+  }, [file]);
 
   return (
     <section className="grid lg:grid-cols-7 grid-cols-1 gap-5 px-2">
@@ -84,9 +102,9 @@ const Home = () => {
             <div className="flex items-center gap-5">
               <img src={userImg} alt="" className="w-16 rounded-full" />
               <textarea
+              name="text"
                 className=" w-full rounded-3xl px-4 py-2 bg-inherit border border-secondary focus:outline-primary focus:border-none"
                 placeholder="What's on your mind..."
-                onChange={(e) => setText(e.target.value)}
               ></textarea>
             </div>
             {/* --------- */}

@@ -6,12 +6,11 @@ import { SlLike } from "react-icons/sl";
 import { TbShare3 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
-import your_name from "../assets/images/your_name.jpg";
 
 const PostContent = ({ content }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   // console.log(content);
-  const { text, file } = content;
+  const { _id,text, img } = content;
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -21,7 +20,6 @@ const PostContent = ({ content }) => {
     console.log(`Clicked ${item}`);
   };
 
-const mainFileUrl = file.replace(/\\/g, "/");
 
   return (
     <div className="mb-5 bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
@@ -42,20 +40,16 @@ const mainFileUrl = file.replace(/\\/g, "/");
         </div>
       </div>
       <div className="mt-5">
-        <p>
-          {text}
-          <Link to="/post-details">
+        <div>
+          <p>{text.slice(0, 200)}</p>
+          <Link to={`/media/${_id}`}>
             <span className="text-info font-semibold underline underline-offset-4">
-              read more
+              See Details
             </span>
           </Link>
-        </p>
+        </div>
 
-        <img
-          src={`http://localhost:5000/${mainFileUrl}`}
-          alt=""
-          className="mt-3 rounded"
-        />
+        <img src={img} alt="" className="mt-3 rounded" />
 
         <div className="mt-3 flex items-end gap-5">
           <div className="dropdown dropdown-top">

@@ -59,7 +59,7 @@ const Header = () => {
             <CustomLink to="/home" title="Home" className="text-neutral" />
           </li>
           <li className="">
-            <CustomLink to="/media" title="Media" className="text-neutral" />
+            <CustomLink to="/medias" title="Media" className="text-neutral" />
           </li>
           <li className="">
             <CustomLink

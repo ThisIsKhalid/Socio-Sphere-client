@@ -22,8 +22,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/media",
+        path: "/medias",
         element: <Medias />,
+      },
+      {
+        path: "/media/:id",
+        element: <PostContentDetails />,
       },
       {
         path: "/profile",
@@ -40,10 +44,6 @@ const router = createBrowserRouter([
       {
         path: "/signin",
         element: <SignIn />,
-      },
-      {
-        path: "/post-details",
-        element: <PostContentDetails />,
       },
     ],
   },
