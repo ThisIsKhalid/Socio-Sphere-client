@@ -5,7 +5,6 @@ import { toast } from "react-hot-toast";
 import userImg from "../../assets/images/userImg.png";
 import Advertise from "../../components/Advertise";
 import PostContent from "../../components/PostContent";
-import UserDetails from "../../components/UserDetails";
 // import ColorCheck from "../../components/colorCheck";
 
 const Home = () => {
@@ -91,11 +90,8 @@ const Home = () => {
   }, [file]);
 
   return (
-    <section className="grid lg:grid-cols-7 grid-cols-1 gap-5 px-2">
-      <div className="lg:col-span-2">
-        <UserDetails />
-      </div>
-      {/* --------middle--------- */}
+    <section className="grid lg:grid-cols-5 grid-cols-1 gap-10 lg:px-20 px-5">
+      {/* --------left--------- */}
       <div className="lg:col-span-4">
         <div className="bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center mb-5">
           <form onSubmit={handleSubmit}>
@@ -152,7 +148,7 @@ const Home = () => {
           <PostContent key={content._id} content={content} />
         ))}
       </div>
-      {/* ---------------- */}
+      {/* ------right---------- */}
       <div className="lg:col-span-1">
         <Advertise />
       </div>

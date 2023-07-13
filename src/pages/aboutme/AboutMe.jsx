@@ -21,11 +21,15 @@ const AboutMe = () => {
     fetchContents();
   }, []);
   return (
-    <div className="lg:w-3/4 w-full px-5 mx-auto">
-      <UserDetails />
-      {contents?.map((content) => (
-        <PostContent key={content._id} content={content} />
-      ))}
+    <div className="grid lg:grid-cols-6 grid-cols-1 gap-5 lg:px-20 px-5">
+      <div className="lg:col-span-2">
+        <UserDetails />
+      </div>
+      <div className="lg:col-span-4">
+        {contents?.map((content) => (
+          <PostContent key={content._id} content={content} />
+        ))}
+      </div>
     </div>
   );
 };

@@ -5,7 +5,6 @@ import Home from "../pages/home/Home";
 import SignIn from "../pages/login/SignIn";
 import SignUp from "../pages/login/SignUp";
 import Medias from "../pages/medias/Medias";
-import Profile from "../pages/profile/Profile";
 import PostContentDetails from "../components/PostContentDetails";
 
 const router = createBrowserRouter([
@@ -31,10 +30,6 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile />,
-      },
-      {
-        path: "/aboutme",
         element: <AboutMe />,
       },
       {

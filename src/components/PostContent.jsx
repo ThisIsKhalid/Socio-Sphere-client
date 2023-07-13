@@ -77,7 +77,7 @@ const PostContent = ({ content }) => {
             )}
           </div>
           <button className="text-2xl">
-            <Link to="/post-details">
+            <Link to={`/media/${_id}`}>
               <BiCommentDetail />
             </Link>
           </button>

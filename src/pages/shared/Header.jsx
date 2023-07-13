@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BsFillChatRightTextFill } from "react-icons/bs";
 import { IoNotifications } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
 import { NavLink, useLocation } from "react-router-dom";
+import { AuthContext } from "../../context/AuthProvider";
+import { toast } from "react-hot-toast";
 
 const Header = () => {
+  const { user, logOut } = useContext(AuthContext);
+  // console.log(user);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -37,6 +41,11 @@ const Header = () => {
     );
   };
 
+  const handleLogout = () => {
+    logOut()
+    .then(() => toast.success("User logged out !"))
+  }
+
   return (
     <section className="py-4 px-4 bg-white/80 shadow-lg mb-10 flex items-center justify-between border border-b-gray-100">
       {/* left side */}
@@ -63,24 +72,35 @@ const Header = () => {
           </li>
           <li className="">
             <CustomLink
-              to="/aboutme"
-              title="About"
+              to="/profile"
+              title="Profile"
               className="text-neutral"
             />
           </li>
-          <li className="">
-            <CustomLink to="/signup" title="Sign-UP" className="text-neutral" />
-          </li>
-          <li className="">
-            <CustomLink to="/signin" title="Sign-IN" className="text-neutral" />
-          </li>
-          <li className="">
-            <CustomLink
-              to="/signout"
-              title="Sign-Out"
-              className="text-neutral"
-            />
-          </li>
+          {user?.email ? (
+            <>
+              <li className="" onClick={handleLogout}>
+                <CustomLink title="Sign-Out" className="text-neutral" />
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="">
+                <CustomLink
+                  to="/signup"
+                  title="Sign-UP"
+                  className="text-neutral"
+                />
+              </li>
+              <li className="">
+                <CustomLink
+                  to="/signin"
+                  title="Sign-IN"
+                  className="text-neutral"
+                />
+              </li>
+            </>
+          )}
         </ul>
         <BsFillChatRightTextFill className="text-xl hidden lg:block" />
         <IoNotifications className="text-xl hidden lg:block" />
@@ -98,28 +118,35 @@ const Header = () => {
                 <CustomLink to="/home" title="Home" className="text-sm" />
               </li>
               <li className="my-2">
-                <CustomLink to="/media" title="Media" className="text-sm" />
+                <CustomLink to="/medias" title="Media" className="text-sm" />
               </li>
               <li className="my-2">
-                <CustomLink
-                  to="/aboutme"
-                  title="About"
-                  className="text-sm"
-                />
+                <CustomLink to="/profile" title="Profile" className="text-sm" />
               </li>
-              <li className="my-2">
-                <CustomLink to="/signup" title="Sign-UP" className="text-sm" />
-              </li>
-              <li className="my-2">
-                <CustomLink to="/signin" title="Sign-IN" className="text-sm" />
-              </li>
-              <li className="mt-2">
-                <CustomLink
-                  to="/signout"
-                  title="Sign-Out"
-                  className="text-sm"
-                />
-              </li>
+              {user?.email ? (
+                <>
+                  <li className="mt-2" onClick={handleLogout}>
+                    <CustomLink title="Sign-Out" className="text-sm" />
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="my-2">
+                    <CustomLink
+                      to="/signup"
+                      title="Sign-UP"
+                      className="text-sm"
+                    />
+                  </li>
+                  <li className="my-2">
+                    <CustomLink
+                      to="/signin"
+                      title="Sign-IN"
+                      className="text-sm"
+                    />
+                  </li>
+                </>
+              )}
             </ul>
           )}
         </div>
