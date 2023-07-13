@@ -70,13 +70,17 @@ const Header = () => {
           <li className="">
             <CustomLink to="/medias" title="Media" className="text-neutral" />
           </li>
-          <li className="">
-            <CustomLink
-              to="/profile"
-              title="Profile"
-              className="text-neutral"
-            />
-          </li>
+          {user?.email && (
+            <>
+              <li className="">
+                <CustomLink
+                  to="/profile"
+                  title="Profile"
+                  className="text-neutral"
+                />
+              </li>
+            </>
+          )}
           {user?.email ? (
             <>
               <li className="" onClick={handleLogout}>
@@ -120,9 +124,17 @@ const Header = () => {
               <li className="my-2">
                 <CustomLink to="/medias" title="Media" className="text-sm" />
               </li>
-              <li className="my-2">
-                <CustomLink to="/profile" title="Profile" className="text-sm" />
-              </li>
+              {user?.email && (
+                <>
+                  <li className="my-2">
+                    <CustomLink
+                      to="/profile"
+                      title="Profile"
+                      className="text-sm"
+                    />
+                  </li>
+                </>
+              )}
               {user?.email ? (
                 <>
                   <li className="mt-2" onClick={handleLogout}>

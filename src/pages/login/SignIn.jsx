@@ -15,7 +15,7 @@ const SignIn = () => {
   const { logIn, googleSignIn } = useContext(AuthContext);
 
     const handleSignIn = (data, e) => {
-      console.log(data);
+      // console.log(data);
       const {email, password } = data;
 
       logIn(email, password)

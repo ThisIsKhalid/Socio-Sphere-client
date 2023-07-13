@@ -1,13 +1,17 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
 import userImg from "../../assets/images/userImg.png";
 import Advertise from "../../components/Advertise";
 import PostContent from "../../components/PostContent";
+import { AuthContext } from "../../context/AuthProvider";
 // import ColorCheck from "../../components/colorCheck";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
+  // console.log(user);
+
   const [contents, setContents] = useState([]);
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -33,43 +37,51 @@ const Home = () => {
     const form = e.target;
     const text = form.text.value;
 
+    if(user?.email){
 
-    if (text || file) {
-      try {
-        let imageUrl = null;
-        if(file) {
-          const formData = new FormData();
-          formData.append("image", file);
+      if (text || file) {
+        
+        try {
+          let imageUrl = null;
+          if (file) {
+            const formData = new FormData();
+            formData.append("image", file);
 
-          const imageUploadResponse = await axios.post(
-            "https://api.imgbb.com/1/upload?key=4e6182c8cb621e9c45518eeee1921456",
-            formData
+            const imageUploadResponse = await axios.post(
+              "https://api.imgbb.com/1/upload?key=4e6182c8cb621e9c45518eeee1921456",
+              formData
+            );
+            imageUrl = imageUploadResponse.data.data.url;
+          }
+
+          const content = {
+            text,
+            img: imageUrl,
+            email: user.email,
+            name: user.displayName,
+            photoURL: user.photoURL,
+          };
+          // console.log(content);
+
+          // eslint-disable-next-line no-unused-vars
+          const response = await axios.post(
+            "http://localhost:5000/api/v1/contents/create-content",
+            content
           );
-          imageUrl = imageUploadResponse.data.data.url;
+
+          // console.log(response.data);
+          toast.success("Post Uploaded !");
+          form.reset();
+          setFile(null);
+          setImageUrl(null);
+        } catch (error) {
+          console.error(error);
         }
-
-        const content = {
-          text,
-          img: imageUrl,
-        };
-        // console.log(content);
-
-        // eslint-disable-next-line no-unused-vars
-        const response = await axios.post(
-          "http://localhost:5000/api/v1/contents/create-content",
-          content
-        );
-
-        // console.log(response.data);
-        toast.success('Post Uploaded !')
-        form.reset();
-        setFile(null);
-        setImageUrl(null);
-      } catch (error) {
-        console.error(error);
-      }
+      } else {
+        toast.error("Please write text or image !");
+      } 
     } else {
-      toast.error("Please write text or image !");
+      toast.error("You have to create a account or logged in for posting.")
     }
   };
 
@@ -96,9 +108,13 @@ const Home = () => {
         <div className="bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center mb-5">
           <form onSubmit={handleSubmit}>
             <div className="flex items-center gap-5">
-              <img src={userImg} alt="" className="w-16 rounded-full" />
+              <img
+                src={user?.photoURL ? user.photoURL : userImg}
+                alt=""
+                className="w-16 rounded-full"
+              />
               <textarea
-              name="text"
+                name="text"
                 className=" w-full rounded-3xl px-4 py-2 bg-inherit border border-secondary focus:outline-primary focus:border-none"
                 placeholder="What's on your mind..."
               ></textarea>

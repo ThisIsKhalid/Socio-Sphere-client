@@ -10,7 +10,7 @@ import userImg from "../assets/images/userImg.png";
 const PostContent = ({ content }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   // console.log(content);
-  const { _id,text, img } = content;
+  const { _id,text, img, name, photoURL } = content;
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -25,13 +25,15 @@ const PostContent = ({ content }) => {
     <div className="mb-5 bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
       <div className=" flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img src={userImg} alt="" className="w-12 rounded-full" />
+          <img
+            src={photoURL ? photoURL : userImg}
+            alt=""
+            className="w-12 rounded-full"
+          />
           <div>
-            <Link to="/profile">
-              <h1 className="text-base font-bold text-gray-800">
-                Khalid Hasan
-              </h1>
-            </Link>
+            <h1 className="text-base font-bold text-gray-800">
+              {name}
+            </h1>
             <p className="text-xs">Dhaka,Bangladesh</p>
           </div>
         </div>
