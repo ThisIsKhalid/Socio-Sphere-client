@@ -1,6 +1,5 @@
 import { BiCommentDetail } from "react-icons/bi";
-import { BsHeart, BsPersonAdd } from "react-icons/bs";
-import { SlLike } from "react-icons/sl";
+import { BsHeart, BsPersonAdd,BsFillHeartFill } from "react-icons/bs";
 import { TbShare3 } from "react-icons/tb";
 import { Link, useParams } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
@@ -10,6 +9,24 @@ import axios from "axios";
 const PostContentDetails = () => {
   let  {id} = useParams();
   const [content,setContent] = useState({})
+  const [loved, setLoved] = useState(false)
+  const [lovedCount, setLovedCount] = useState(0);
+
+  const handleLove = async () => {
+    const updatedLoved = !loved;
+    const updatedLovedCount = updatedLoved ? lovedCount + 1 : lovedCount - 1;
+
+    try {
+      await axios.patch(`http://localhost:5000/api/v1/contents/${id}`, {
+        lovedCount: updatedLovedCount,
+      });
+
+      setLoved(updatedLoved);
+      setLovedCount(updatedLovedCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -19,6 +36,7 @@ const PostContentDetails = () => {
         );
 
         setContent(response.data);
+        setLovedCount(response.data.lovedCount);
       } catch (error) {
         console.error(error);
       }
@@ -27,15 +45,7 @@ const PostContentDetails = () => {
     fetchContent();
   }, [id]);
 
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-
-    const handleDropdownToggle = () => {
-      setDropdownOpen(!dropdownOpen);
-    };
-
-    const handleItemClick = (item) => {
-      console.log(`Clicked ${item}`);
-    };
+    
   return (
     <div className="lg:w-3/4 w-full mx-auto px-5">
       <div className="mb-5 bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
@@ -56,37 +66,26 @@ const PostContentDetails = () => {
           </div>
         </div>
         <div className="mt-5">
-          <p>
-            {content.text}
-          </p>
+          <p>{content.text}</p>
 
           <img src={content.img} alt="" className="mt-3 rounded" />
 
           <div className="mt-3 flex items-end gap-5">
-            <div className="dropdown dropdown-top">
-              <label tabIndex={0} className="" onClick={handleDropdownToggle}>
-                <SlLike className="text-2xl" />
-              </label>
-              {dropdownOpen && (
-                <>
-                  <ul
-                    tabIndex={0}
-                    className="dropdown-content px-5 py-2 shadow bg-gray-100 rounded flex items-center gap-5 mb-4 ml-1"
-                  >
-                    <li>
-                      <button onClick={() => handleItemClick("Like")}>
-                        <SlLike className="text-2xl text-info font-bold" />
-                      </button>
-                    </li>
-                    <li>
-                      <button onClick={() => handleItemClick("Love")}>
-                        <BsHeart className="text-2xl text-error font-bold" />
-                      </button>
-                    </li>
-                  </ul>
-                </>
+            <div className="relative">
+              {loved ? (
+                <BsFillHeartFill
+                  className="text-2xl text-error font-bold cursor-pointer"
+                  onClick={handleLove}
+                />
+              ) : (
+                <BsHeart
+                  className="text-2xl font-bold cursor-pointer"
+                  onClick={handleLove}
+                />
               )}
+            <p className="text-lg font-bold text-secondary absolute -top-4 -right-2">{lovedCount}</p>
             </div>
+
             <button className="text-2xl">
               <Link to="/post-details">
                 <BiCommentDetail />

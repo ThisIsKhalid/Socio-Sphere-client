@@ -1,25 +1,34 @@
 /* eslint-disable react/prop-types */
+import axios from "axios";
 import { useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
-import { BsHeart, BsPersonAdd } from "react-icons/bs";
-import { SlLike } from "react-icons/sl";
+import { BsFillHeartFill, BsHeart, BsPersonAdd } from "react-icons/bs";
 import { TbShare3 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
 
 const PostContent = ({ content }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   // console.log(content);
-  const { _id,text, img, name, photoURL } = content;
+  const { _id, text, img, name, photoURL } = content;
 
-  const handleDropdownToggle = () => {
-    setDropdownOpen(!dropdownOpen);
+  const [loved, setLoved] = useState(false);
+  const [lovedCount, setLovedCount] = useState(0);
+
+  const handleLove = async () => {
+    const updatedLoved = !loved;
+    const updatedLovedCount = updatedLoved ? lovedCount + 1 : lovedCount - 1;
+
+    try {
+      await axios.patch(`http://localhost:5000/api/v1/contents/${_id}`, {
+        lovedCount: updatedLovedCount,
+      });
+
+      setLoved(updatedLoved);
+      setLovedCount(updatedLovedCount);
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  const handleItemClick = (item) => {
-    console.log(`Clicked ${item}`);
-  };
-
 
   return (
     <div className="mb-5 bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
@@ -31,9 +40,7 @@ const PostContent = ({ content }) => {
             className="w-12 rounded-full"
           />
           <div>
-            <h1 className="text-base font-bold text-gray-800">
-              {name}
-            </h1>
+            <h1 className="text-base font-bold text-gray-800">{name}</h1>
             <p className="text-xs">Dhaka,Bangladesh</p>
           </div>
         </div>
@@ -54,30 +61,23 @@ const PostContent = ({ content }) => {
         <img src={img} alt="" className="mt-3 rounded" />
 
         <div className="mt-3 flex items-end gap-5">
-          <div className="dropdown dropdown-top">
-            <label tabIndex={0} className="" onClick={handleDropdownToggle}>
-              <SlLike className="text-2xl" />
-            </label>
-            {dropdownOpen && (
-              <>
-                <ul
-                  tabIndex={0}
-                  className="dropdown-content px-5 py-2 shadow bg-gray-100 rounded flex items-center gap-5 mb-4 ml-1"
-                >
-                  <li>
-                    <button onClick={() => handleItemClick("Like")}>
-                      <SlLike className="text-2xl text-info font-bold" />
-                    </button>
-                  </li>
-                  <li>
-                    <button onClick={() => handleItemClick("Love")}>
-                      <BsHeart className="text-2xl text-error font-bold" />
-                    </button>
-                  </li>
-                </ul>
-              </>
+          <div className="relative">
+            {loved ? (
+              <BsFillHeartFill
+                className="text-2xl text-error font-bold cursor-pointer"
+                onClick={handleLove}
+              />
+            ) : (
+              <BsHeart
+                className="text-2xl font-bold cursor-pointer"
+                onClick={handleLove}
+              />
             )}
+            <p className="text-lg font-bold text-secondary absolute -top-4 -right-2">
+              {lovedCount}
+            </p>
           </div>
+
           <button className="text-2xl">
             <Link to={`/media/${_id}`}>
               <BiCommentDetail />
