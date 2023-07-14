@@ -29,7 +29,10 @@ const UserDetails = ({ user }) => {
     };
 
     axios
-      .patch(`http://localhost:5000/api/v1/users/${user?.email}`, formData)
+      .patch(
+        `https://socio-sphere-server-nine.vercel.app/api/v1/users/${user?.email}`,
+        formData
+      )
       .then((response) => {
         if (response.data.createdAt) {
           toast.success("Profile Updated Successfully");
@@ -49,7 +52,7 @@ const UserDetails = ({ user }) => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${user?.email}`
+          `https://socio-sphere-server-nine.vercel.app/api/v1/users/${user?.email}`
         );
         setDbUser(response.data);
       } catch (error) {

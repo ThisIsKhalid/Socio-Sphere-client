@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { createContext, useEffect, useState } from "react";
 
 export const LovedCountContext = createContext();
 
@@ -10,7 +10,7 @@ export const LovedCountProvider = ({ children }) => {
   const fetchLovedCount = async (contentId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/v1/contents/${contentId}`
+        `https://socio-sphere-server-nine.vercel.app/api/v1/contents/${contentId}`
       );
       const updatedLovedCounts = {
         ...lovedCounts,
@@ -24,9 +24,12 @@ export const LovedCountProvider = ({ children }) => {
 
   const updateLovedCount = async (contentId, newLovedCount) => {
     try {
-      await axios.patch(`http://localhost:5000/api/v1/contents/${contentId}`, {
-        lovedCount: newLovedCount,
-      });
+      await axios.patch(
+        `https://socio-sphere-server-nine.vercel.app/api/v1/contents/${contentId}`,
+        {
+          lovedCount: newLovedCount,
+        }
+      );
       const updatedLovedCounts = { ...lovedCounts, [contentId]: newLovedCount };
       setLovedCounts(updatedLovedCounts);
     } catch (error) {
@@ -39,7 +42,7 @@ export const LovedCountProvider = ({ children }) => {
       try {
         // Fetch initial loved counts for all content
         const response = await axios.get(
-          "http://localhost:5000/api/v1/contents"
+          "https://socio-sphere-server-nine.vercel.app/api/v1/contents"
         );
         const initialLovedCounts = response.data.reduce(
           (counts, content) => ({

@@ -12,7 +12,7 @@ const AboutMe = () => {
     const fetchContents = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/contents/my-contents/?email=${user?.email}`
+          `https://socio-sphere-server-nine.vercel.app/api/v1/contents/my-contents/?email=${user?.email}`
         );
         setContents(response.data);
       } catch (error) {
@@ -23,9 +23,6 @@ const AboutMe = () => {
     fetchContents();
   }, [user?.email]);
 
-  
-
-  
   return (
     <div className="grid lg:grid-cols-6 grid-cols-1 gap-5 lg:px-20 px-5">
       <div className="lg:col-span-2">

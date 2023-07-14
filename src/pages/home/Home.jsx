@@ -47,7 +47,9 @@ const Home = () => {
             formData.append("image", file);
 
             const imageUploadResponse = await axios.post(
-              "https://api.imgbb.com/1/upload?key=4e6182c8cb621e9c45518eeee1921456",
+              `https://api.imgbb.com/1/upload?key=${
+                import.meta.env.VITE_IMAGEBB_API_KEY
+              }`,
               formData
             );
             imageUrl = imageUploadResponse.data.data.url;
@@ -64,7 +66,7 @@ const Home = () => {
 
           // eslint-disable-next-line no-unused-vars
           const response = await axios.post(
-            "http://localhost:5000/api/v1/contents/create-content",
+            "https://socio-sphere-server-nine.vercel.app/api/v1/contents/create-content",
             content
           );
 
@@ -89,7 +91,7 @@ const Home = () => {
     const fetchContents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/v1/contents"
+          "https://socio-sphere-server-nine.vercel.app/api/v1/contents"
         );
         setContents(response.data);
       } catch (error) {

@@ -1,16 +1,15 @@
-
+import axios from "axios";
 import { useEffect, useState } from "react";
 import PostContent from "../../components/PostContent";
-import axios from "axios";
 
 const Medias = () => {
-  const [contents, setContents] = useState([])
+  const [contents, setContents] = useState([]);
 
   useEffect(() => {
     const fetchContents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/v1/contents"
+          "https://socio-sphere-server-nine.vercel.app/api/v1/contents"
         );
         setContents(response.data);
       } catch (error) {

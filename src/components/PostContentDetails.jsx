@@ -36,7 +36,7 @@ const PostContentDetails = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/v1/comments`,
+        `https://socio-sphere-server-nine.vercel.app/api/v1/comments`,
         {
           email: user?.email,
           name: user?.displayName,
@@ -57,7 +57,7 @@ const PostContentDetails = () => {
     const fetchContent = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/contents/${id}`
+          `https://socio-sphere-server-nine.vercel.app/api/v1/contents/${id}`
         );
 
         setContent(response.data);
@@ -74,7 +74,7 @@ const PostContentDetails = () => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/comments?postId=${id}`
+          `https://socio-sphere-server-nine.vercel.app/api/v1/comments?postId=${id}`
         );
         const commentsData = response.data;
         setComments(commentsData);
