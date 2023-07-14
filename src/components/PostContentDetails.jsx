@@ -1,28 +1,27 @@
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
-import { BsHeart, BsPersonAdd,BsFillHeartFill } from "react-icons/bs";
+import { BsFillHeartFill, BsHeart, BsPersonAdd } from "react-icons/bs";
 import { TbShare3 } from "react-icons/tb";
 import { Link, useParams } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { LovedCountContext } from "../context/LovedCountProvider";
 
 const PostContentDetails = () => {
-  let  {id} = useParams();
-  const [content,setContent] = useState({})
-  const [loved, setLoved] = useState(false)
-  const [lovedCount, setLovedCount] = useState(0);
+  const { lovedCounts, fetchLovedCount, updateLovedCount } =
+    useContext(LovedCountContext);
+  let { id } = useParams();
+  const [content, setContent] = useState({});
+  const [loved, setLoved] = useState(false);
+  const lovedCount = lovedCounts[id] || 0;
 
   const handleLove = async () => {
     const updatedLoved = !loved;
-    const updatedLovedCount = updatedLoved ? lovedCount + 1 : lovedCount - 1;
+    const newLovedCount = updatedLoved ? lovedCount + 1 : lovedCount - 1;
 
     try {
-      await axios.patch(`http://localhost:5000/api/v1/contents/${id}`, {
-        lovedCount: updatedLovedCount,
-      });
-
+      await updateLovedCount(id, newLovedCount);
       setLoved(updatedLoved);
-      setLovedCount(updatedLovedCount);
     } catch (error) {
       console.error(error);
     }
@@ -36,16 +35,15 @@ const PostContentDetails = () => {
         );
 
         setContent(response.data);
-        setLovedCount(response.data.lovedCount);
+        fetchLovedCount(id);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchContent();
-  }, [id]);
+  }, [id, fetchLovedCount]);
 
-    
   return (
     <div className="lg:w-3/4 w-full mx-auto px-5">
       <div className="mb-5 bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
@@ -83,7 +81,9 @@ const PostContentDetails = () => {
                   onClick={handleLove}
                 />
               )}
-            <p className="text-lg font-bold text-secondary absolute -top-4 -right-2">{lovedCount}</p>
+              <p className="text-lg font-bold text-secondary absolute -top-4 -right-2">
+                {lovedCount}
+              </p>
             </div>
 
             <button className="text-2xl">

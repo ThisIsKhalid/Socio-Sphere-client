@@ -1,34 +1,38 @@
 /* eslint-disable react/prop-types */
-import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsFillHeartFill, BsHeart, BsPersonAdd } from "react-icons/bs";
 import { TbShare3 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
+import { LovedCountContext } from "../context/LovedCountProvider";
 
 const PostContent = ({ content }) => {
   // console.log(content);
   const { _id, text, img, name, photoURL } = content;
 
+  const { lovedCounts, fetchLovedCount, updateLovedCount } =
+    useContext(LovedCountContext);
   const [loved, setLoved] = useState(false);
-  const [lovedCount, setLovedCount] = useState(0);
+  const lovedCount = lovedCounts[_id] || 0;
 
   const handleLove = async () => {
     const updatedLoved = !loved;
-    const updatedLovedCount = updatedLoved ? lovedCount + 1 : lovedCount - 1;
+    const newLovedCount = updatedLoved ? lovedCount + 1 : lovedCount - 1;
 
     try {
-      await axios.patch(`http://localhost:5000/api/v1/contents/${_id}`, {
-        lovedCount: updatedLovedCount,
-      });
-
+      await updateLovedCount(_id, newLovedCount);
       setLoved(updatedLoved);
-      setLovedCount(updatedLovedCount);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (!lovedCounts[_id]) {
+      fetchLovedCount(_id);
+    }
+  }, [_id, lovedCounts, fetchLovedCount]);
 
   return (
     <div className="mb-5 bg-white/80 border border-gray-200 shadow-lg rounded-lg p-5 flex flex-col justify-center">
