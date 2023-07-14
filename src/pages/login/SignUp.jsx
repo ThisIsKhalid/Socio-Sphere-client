@@ -16,7 +16,7 @@ const SignUp = () => {
     useContext(AuthContext);
 
   const handleSignUp = (data, e) => {
-    console.log(data);
+    // console.log(data);
     const { name, email, password } = data;
 
     createUser(email, password)

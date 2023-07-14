@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsGithub, BsTwitter } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
@@ -9,11 +10,10 @@ import {
   MdWorkOutline,
 } from "react-icons/md";
 import userImg from "../assets/images/userImg.png";
-import { useEffect, useState } from "react";
 
 const UserDetails = ({ user }) => {
   // console.log(user);
-  const [dbUser, setDbUser] = useState({})
+  const [dbUser, setDbUser] = useState({});
 
   const handleUpdate = (event) => {
     event.preventDefault();
@@ -34,11 +34,13 @@ const UserDetails = ({ user }) => {
         if (response.data.createdAt) {
           toast.success("Profile Updated Successfully");
           window.edit_user.close();
+
+          setDbUser(response.data);
         }
       })
       .catch((error) => {
         // console.error(error);
-        toast.error(error.message)
+        toast.error(error.message);
       });
   };
 
@@ -153,26 +155,36 @@ const UserDetails = ({ user }) => {
         </div>
 
         {/* -------------------------- */}
-        <div className="border-b pb-3 mb-3">
-          <div className="flex items-center gap-1">
-            <IoLocationOutline className="text-lg" />
-            <p>{dbUser?.location}</p>
-          </div>
-          <div className="flex items-center gap-1">
-            <MdWorkOutline className="text-lg" />
-            <p>
-              Works at{" "}
-              <span className="font-semibold">{dbUser?.workPlace}</span>
+        {dbUser?.location ? (
+          <>
+            <div className="border-b pb-3 mb-3">
+              <div className="flex items-center gap-1">
+                <IoLocationOutline className="text-lg" />
+                <p>{dbUser?.location}</p>
+              </div>
+              <div className="flex items-center gap-1">
+                <MdWorkOutline className="text-lg" />
+                <p>
+                  Works at{" "}
+                  <span className="font-semibold">{dbUser?.workPlace}</span>
+                </p>
+              </div>
+              <div className="flex items-center gap-1">
+                <MdWorkOutline className="text-lg" />
+                <p>
+                  Studied at{" "}
+                  <span className="font-semibold">{dbUser?.university}</span>
+                </p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-xs text-error">
+              Please update your info. Click that edit icon 🖍
             </p>
-          </div>
-          <div className="flex items-center gap-1">
-            <MdWorkOutline className="text-lg" />
-            <p>
-              Studied at{" "}
-              <span className="font-semibold">{dbUser?.university}</span>
-            </p>
-          </div>
-        </div>
+          </>
+        )}
 
         {/* ---------------------------- */}
         <div>

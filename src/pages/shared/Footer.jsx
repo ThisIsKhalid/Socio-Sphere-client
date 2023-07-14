@@ -21,13 +21,13 @@ const Footer = () => {
             <h3 className="text-xl font-medium">Links</h3>
             <ul className="flex flex-col gap-2 mt-4 text-gray-300">
               <li>
-                <Link>Home</Link>
+                <Link to="/home">Home</Link>
               </li>
               <li>
-                <Link>Media</Link>
+                <Link to="/medias">Media</Link>
               </li>
               <li>
-                <Link>About</Link>
+                <Link to="/profile">About</Link>
               </li>
             </ul>
           </div>

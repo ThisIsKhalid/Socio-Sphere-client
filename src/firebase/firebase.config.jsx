@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDKcSRCYDooW0-ni2EXuO2F52VJ7C6u3Vw",
-  authDomain: "socio-sphere.firebaseapp.com",
-  projectId: "socio-sphere",
-  storageBucket: "socio-sphere.appspot.com",
-  messagingSenderId: "102627205592",
-  appId: "1:102627205592:web:3a13c54628c780e42912ad",
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
 };
 
 // Initialize Firebase

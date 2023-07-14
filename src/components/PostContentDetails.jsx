@@ -5,13 +5,17 @@ import { BsFillHeartFill, BsHeart, BsPersonAdd } from "react-icons/bs";
 import { TbShare3 } from "react-icons/tb";
 import { Link, useParams } from "react-router-dom";
 import userImg from "../assets/images/userImg.png";
+import { AuthContext } from "../context/AuthProvider";
 import { LovedCountContext } from "../context/LovedCountProvider";
 
 const PostContentDetails = () => {
+  const { user } = useContext(AuthContext);
   const { lovedCounts, fetchLovedCount, updateLovedCount } =
     useContext(LovedCountContext);
   let { id } = useParams();
   const [content, setContent] = useState({});
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
   const [loved, setLoved] = useState(false);
   const lovedCount = lovedCounts[id] || 0;
 
@@ -22,6 +26,28 @@ const PostContentDetails = () => {
     try {
       await updateLovedCount(id, newLovedCount);
       setLoved(updatedLoved);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/v1/comments`,
+        {
+          email: user?.email,
+          name: user?.displayName,
+          postId: id,
+          text: newComment,
+        }
+      );
+
+      const newCommentData = response.data;
+      setComments([...comments, newCommentData]);
+      setNewComment("");
     } catch (error) {
       console.error(error);
     }
@@ -43,6 +69,22 @@ const PostContentDetails = () => {
 
     fetchContent();
   }, [id, fetchLovedCount]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/comments?postId=${id}`
+        );
+        const commentsData = response.data;
+        setComments(commentsData);
+        console.log(commentsData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchComments();
+  }, [id]);
 
   return (
     <div className="lg:w-3/4 w-full mx-auto px-5">
@@ -97,11 +139,13 @@ const PostContentDetails = () => {
           </div>
 
           <div className="mt-5">
-            <form action="">
+            <form onSubmit={handleCommentSubmit}>
               <textarea
                 type="text"
                 placeholder="type comment..."
                 className="textarea textarea-accent lg:w-1/2 w-full"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
               />
               <br />
               <input
@@ -112,27 +156,21 @@ const PostContentDetails = () => {
             </form>
 
             <div className="mt-5 grid lg:grid-cols-3 grid-cols-1 gap-5">
-              <div className="border border-gray-200 shadow-md rounded-md bg-gray-200 px-5 py-2">
-                <h1 className="font-bold text-warning">Khalid Hasan</h1>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Doloribus, obcaecati!
-                </p>
-              </div>
-              <div className="border border-gray-200 shadow-md rounded-md bg-gray-200 px-5 py-2">
-                <h1 className="font-bold text-warning">Khalid Hasan</h1>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Doloribus, obcaecati!
-                </p>
-              </div>
-              <div className="border border-gray-200 shadow-md rounded-md bg-gray-200 px-5 py-2">
-                <h1 className="font-bold text-warning">Khalid Hasan</h1>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Doloribus, obcaecati!
-                </p>
-              </div>
+              {Array.isArray(comments) ? (
+                <>
+                  {comments.map((comment) => (
+                    <div
+                      key={comment._id}
+                      className="border border-gray-200 shadow-md rounded-md bg-gray-200 px-5 py-2"
+                    >
+                      <h1 className="font-bold text-warning">{comment.name}</h1>
+                      <p>{comment.text}</p>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <p>No comments available</p>
+              )}
             </div>
           </div>
         </div>

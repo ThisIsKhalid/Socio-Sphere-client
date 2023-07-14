@@ -13,6 +13,7 @@ const Home = () => {
   // console.log(user);
 
   const [contents, setContents] = useState([]);
+  const [topContents, setTopContents] = useState([]);
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -37,10 +38,8 @@ const Home = () => {
     const form = e.target;
     const text = form.text.value;
 
-    if(user?.email){
-
+    if (user?.email) {
       if (text || file) {
-        
         try {
           let imageUrl = null;
           if (file) {
@@ -79,9 +78,9 @@ const Home = () => {
         }
       } else {
         toast.error("Please write text or image !");
-      } 
+      }
     } else {
-      toast.error("You have to create a account or logged in for posting.")
+      toast.error("You have to create a account or logged in for posting.");
     }
   };
 
@@ -100,6 +99,14 @@ const Home = () => {
 
     fetchContents();
   }, [file]);
+
+  // Sort the contents based on the loved count
+  useEffect(() => {
+    const sortedContents = [...contents].sort(
+      (a, b) => b.lovedCount - a.lovedCount
+    );
+    setTopContents(sortedContents.slice(0, 3));
+  }, [contents]);
 
   return (
     <section className="grid lg:grid-cols-5 grid-cols-1 gap-10 lg:px-20 px-5">
@@ -160,7 +167,7 @@ const Home = () => {
         <h1 className="text-2xl font-bold text-secondary underline underline-offset-8 bg-white/80 border border-gray-200 shadow-lg rounded-lg px-5 py-5">
           Trending Topics :
         </h1>
-        {contents?.map((content) => (
+        {topContents.map((content) => (
           <PostContent key={content._id} content={content} />
         ))}
       </div>

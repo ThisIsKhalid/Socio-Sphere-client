@@ -6,8 +6,7 @@ export const saveUserInDB = (name, email) => {
 
   axios
     .post("http://localhost:5000/api/v1/users/create-user", user)
-    .then((response) => {
-      console.log(response.data);
+    .then(() => {
       toast.success("User created successfully!");
     })
     .catch((error) => {
